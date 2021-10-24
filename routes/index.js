@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const stripe = require('stripe')('sk_test_51JnKdABSx9lOZ6AEd4RGIR3X1U2XLiqQ1LdStS1gjQa9gBtWYQGIYBMfzTqY48qEFpncgIP3KZ7AaBmCFymMKRXj00Q7oPf55N')
 
 /* GET home page. */
 
@@ -80,5 +81,33 @@ router.post('/update-shop', function(req,res) {
   req.session.dataCardBike[req.body.position].quantity = newQuantity;
   res.render('shop', {dataCardBike: req.session.dataCardBike})
 })
+
+router.post('/create-checkout-session', async (req, res) => {
+  
+    var items = []
+    
+    req.session.dataCardBike.forEach(bike => {
+        items.push({
+          price_data: {
+            currency: 'eur',
+            product_data: {
+              name: bike.nom,
+            },
+            unit_amount: bike.prix*100,
+          },
+          quantity: 1,
+        },)
+    });
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+    line_items: items,
+    mode: 'payment',
+    success_url: 'http://localhost:3000/success',
+    cancel_url: 'http://localhost:3000/cancel',
+  });
+
+  res.redirect(303, session.url);
+});
 
 module.exports = router;

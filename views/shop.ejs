@@ -78,7 +78,11 @@
           <td></td>
           <td>Total Basket: </td>
           <td><%= sum %> €</td>
-          <td></td>
+          <td>
+            <form action="/create-checkout-session" method="POST">
+            <button type="submit" class="btn btn-outline-info">Checkout</button>
+            </form>
+          </td>
         </tr>
       </tbody>
       <%  } %>  
