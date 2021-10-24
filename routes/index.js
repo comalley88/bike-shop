@@ -39,39 +39,46 @@ var dataBike = [
 
 
 router.get('/', function(req, res) {
-  console.log(req.query)
-  res.render('index', {dataBike});
+  if (req.session.dataCardBike === undefined) {
+    req.session.dataCardBike = []
+  }
+  
+
+  res.render('index', {dataBike: dataBike});
 });
 
-var dataCardBike = [];
-
 router.get('/shop', function(req,res) {
-  console.log(req.query)
-  console.log(dataCardBike)
-  dataCardBike.push({nom: req.query.nom,
-      url: req.query.url,
-      prix: req.query.prix,
-      quantity: 1})
+
+  var inBasket = false 
+  for (var i=0; i<req.session.dataCardBike.length; i++) {
+    if (req.session.dataCardBike[i].nom === req.query.nom) {
+      req.session.dataCardBike[i].quantity++;
+      inBasket = true
+    }}
+  if (inBasket === false) {req.session.dataCardBike.push({nom: req.query.nom,
+    url: req.query.url,
+    prix: req.query.prix,
+    quantity: 1})}
  
-  res.render('shop', {dataCardBike})
+  res.render('shop', {dataCardBike: req.session.dataCardBike})
 })
 
 
 router.get('/delete-shop', function(req,res) {
-  console.log(req.query)
-  for (var i=0; i<dataCardBike.length; i++) {
-    if (dataCardBike[i].nom === req.query.nom) {
-      dataCardBike.splice(dataCardBike[i], 1)
+
+  for (var i=0; i<req.session.dataCardBike.length; i++) {
+    if (req.session.dataCardBike[i].nom === req.query.nom) {
+      req.session.dataCardBike.splice(req.session.dataCardBike[i], 1)
     }
   }
-  res.render('shop', {dataCardBike})
+  res.render('shop', {dataCardBike: req.session.dataCardBike})
 })
 
 router.post('/update-shop', function(req,res) {
-  console.log(req.body)
+
   var newQuantity = req.body.quantity
-  dataCardBike[req.body.position].quantity = newQuantity;
-  res.render('shop', {dataCardBike})
+  req.session.dataCardBike[req.body.position].quantity = newQuantity;
+  res.render('shop', {dataCardBike: req.session.dataCardBike})
 })
 
 module.exports = router;
