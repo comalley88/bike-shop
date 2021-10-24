@@ -1,8 +1,32 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-
+body{
+  font-family: 'Darker Grotesque', sans-serif;
+} 
 a {
   color: #00B7FF;
+}
+
+#quantity {
+  margin-right: 8px;
+}
+
+a, a:hover{
+  color: white
+}
+
+#picture-header {
+  background-image: url('/images/bike-background.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 150px;
+  margin-bottom: 20px;
+}
+
+.card {
+margin-bottom: 20px;
+}
+.basket-img{
+  width: 170px;
+}
+.card-body {
+text-align: center;
 }
