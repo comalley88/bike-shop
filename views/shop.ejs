@@ -47,17 +47,25 @@
     </tr>
   </thead>
   <tbody>
-    <% for (var i=0 ; i<dataCardBike.length; i++) {%>
+    <% for(var i=0; i<dataCardBike.length ; i++) {%> 
     <tr>
       <th scope="row"><%= i %> </th>
       <td ><img class="basket-img" src=<%= dataCardBike[i].url%>  alt="bike"></td>
       <td ><%= dataCardBike[i].nom %> </td>
-      <td ><input type="text" name="quantity" id="quantity" value=<%= dataCardBike[i].quantity %> ><button type="button" class="btn btn-outline-info"><i class="fas fa-sync"></i></button></td>
+      <td >
+        <form action="/update-shop" method="post">
+          <input type="text" name="quantity" id="quantity" value=<%= dataCardBike[i].quantity %>   >
+          <input type="hidden" name="position" value=<%= i %> >
+          <button type="submit" class="btn btn-outline-info"><i class="fas fa-sync"></i></button>
+        </form>
+      </td>
       <td ><%= dataCardBike[i].prix %> €</td>
       <td ><%= dataCardBike[i].prix * dataCardBike[i].quantity %> €</td>
-      <td ><button type="button" class="btn btn-outline-info"><i class="far fa-trash-alt"></i></button></td>
+      <td >
+          <a class="btn btn-outline-info" href="/delete-shop?nom=<%= dataCardBike[i].nom %>"> <i class="far fa-trash-alt"></i> </a>
+      </td>
     </tr>
-  <% } %>
+  <% } %> 
   </tbody>
 </table>
 
