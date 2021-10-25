@@ -103,11 +103,15 @@ router.post('/create-checkout-session', async (req, res) => {
       payment_method_types: ['card'],
     line_items: items,
     mode: 'payment',
-    success_url: 'http://localhost:3000/success',
+    success_url: 'http://localhost:3000/sucess',
     cancel_url: 'http://localhost:3000/cancel',
   });
 
   res.redirect(303, session.url);
 });
+
+router.get('/sucess', function(req,res) {
+  res.render('sucess')
+})
 
 module.exports = router;
